@@ -1,7 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { RootLayout } from '@/layouts/RootLayout'
-import { DesignPage } from '@/pages/DesignPage'
 import { HomePage } from '@/pages/HomePage'
+import { InventoryPage } from '@/pages/InventoryPage'
+
+// Rutas secundarias con code splitting: no cargan hasta que se visitan.
+const lazyPage = (loader: () => Promise<Record<string, React.ComponentType>>, name: string) => {
+  return async () => ({ Component: (await loader())[name] })
+}
 
 export const router = createBrowserRouter(
   [
@@ -9,7 +14,17 @@ export const router = createBrowserRouter(
       element: <RootLayout />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: 'design', element: <DesignPage /> },
+        { path: 'items', element: <InventoryPage /> },
+        { path: 'items/new', lazy: lazyPage(() => import('@/pages/ItemFormPage'), 'ItemFormPage') },
+        {
+          path: 'items/:id',
+          lazy: lazyPage(() => import('@/pages/ItemDetailPage'), 'ItemDetailPage'),
+        },
+        {
+          path: 'items/:id/edit',
+          lazy: lazyPage(() => import('@/pages/ItemFormPage'), 'ItemFormPage'),
+        },
+        { path: 'design', lazy: lazyPage(() => import('@/pages/DesignPage'), 'DesignPage') },
       ],
     },
   ],

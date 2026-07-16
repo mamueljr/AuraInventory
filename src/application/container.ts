@@ -10,6 +10,7 @@ import {
   DexieUnitOfWork,
 } from '@/data/repositories/dexie-repositories'
 import { ItemService } from '@/application/services/item-service'
+import { PhotoService } from '@/application/services/photo-service'
 
 /**
  * Composition root: único lugar donde application conoce las implementaciones
@@ -32,7 +33,8 @@ export function createContainer(database: AuraDatabase) {
   }
   const uow = new DexieUnitOfWork(database)
   const itemService = new ItemService({ uow, ...repos })
-  return { repos, uow, itemService }
+  const photoService = new PhotoService({ uow, items: repos.items, photos: repos.photos })
+  return { repos, uow, itemService, photoService }
 }
 
 export type Container = ReturnType<typeof createContainer>

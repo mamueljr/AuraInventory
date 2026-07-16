@@ -3,7 +3,7 @@ import type { ItemDraft } from '@/domain/entities'
 import { container } from '@/application/container'
 import { queryKeys } from '@/application/queries/keys'
 
-const { repos, itemService } = container
+const { repos, itemService, photoService } = container
 
 export function useRecentItems(limit = 50) {
   return useQuery({
@@ -47,6 +47,19 @@ export function useCreateItem() {
   })
 }
 
+/** Alta completa: crea el objeto y adjunta sus fotos comprimidas en un paso. */
+export function useCreateItemWithPhotos() {
+  const invalidate = useInvalidateItems()
+  return useMutation({
+    mutationFn: async ({ draft, files }: { draft: ItemDraft; files: File[] }) => {
+      const item = await itemService.create(draft)
+      if (files.length) await photoService.addPhotos(item.id, files)
+      return item
+    },
+    onSuccess: invalidate,
+  })
+}
+
 export function useUpdateItem() {
   const invalidate = useInvalidateItems()
   return useMutation({
@@ -60,6 +73,23 @@ export function useDeleteItem() {
   const invalidate = useInvalidateItems()
   return useMutation({
     mutationFn: (id: string) => itemService.softDelete(id),
+    onSuccess: invalidate,
+  })
+}
+
+export function useRestoreItem() {
+  const invalidate = useInvalidateItems()
+  return useMutation({
+    mutationFn: (id: string) => itemService.restore(id),
+    onSuccess: invalidate,
+  })
+}
+
+export function useToggleFavorite() {
+  const invalidate = useInvalidateItems()
+  return useMutation({
+    mutationFn: ({ id, favorite }: { id: string; favorite: boolean }) =>
+      itemService.update(id, { favorite }),
     onSuccess: invalidate,
   })
 }
