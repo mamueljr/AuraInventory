@@ -15,7 +15,9 @@ export function useRecentItems(limit = 50) {
 export function useItem(id: string) {
   return useQuery({
     queryKey: queryKeys.items.detail(id),
-    queryFn: () => repos.items.getById(id),
+    // null en vez de undefined: TanStack Query no admite undefined como dato
+    queryFn: async () => (await repos.items.getById(id)) ?? null,
+    enabled: id !== '',
   })
 }
 
