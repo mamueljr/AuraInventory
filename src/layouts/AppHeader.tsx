@@ -4,6 +4,7 @@ import { cn } from '@/design-system'
 
 const links = [
   { to: '/items', label: 'Objetos' },
+  { to: '/organize', label: 'Organizar' },
   { to: '/design', label: 'Design' },
 ]
 

@@ -55,6 +55,21 @@ export async function seedDemoData(container: Container): Promise<boolean> {
   const tags: Tag[] = TAGS.map((name) => ({ id: newId(), name }))
   await repos.tags.bulkPut(tags)
 
+  const LOCATIONS: Record<string, string[]> = {
+    Oficina: ['Escritorio', 'Librero'],
+    Cochera: ['Estante de herramientas'],
+  }
+  for (const [roomName, names] of Object.entries(LOCATIONS)) {
+    const room = rooms.find((r) => r.name === roomName)
+    if (room)
+      await repos.locations.bulkPut(names.map((name) => ({ id: newId(), roomId: room.id, name })))
+  }
+
+  await repos.collections.bulkPut([
+    { id: newId(), name: 'Setup de trabajo' },
+    { id: newId(), name: 'Herencia familiar' },
+  ])
+
   const byName = (name: string) => categories.find((c) => c.name === name)
   const roomByName = (name: string) => rooms.find((r) => r.name === name)
 

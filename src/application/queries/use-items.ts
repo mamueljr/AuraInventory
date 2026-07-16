@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMemo } from 'react'
 import type { ItemDraft } from '@/domain/entities'
+import { matchesFilter, type InventoryFilter } from '@/domain/inventory-filter'
 import { container } from '@/application/container'
 import { queryKeys } from '@/application/queries/keys'
 
@@ -19,6 +21,16 @@ export function useItem(id: string) {
     queryFn: async () => (await repos.items.getById(id)) ?? null,
     enabled: id !== '',
   })
+}
+
+/** Inventario activo con filtro combinable aplicado en memoria. */
+export function useFilteredItems(filter: InventoryFilter, limit = 10000) {
+  const query = useRecentItems(limit)
+  const filtered = useMemo(
+    () => query.data?.filter((item) => matchesFilter(item, filter)),
+    [query.data, filter],
+  )
+  return { ...query, data: filtered }
 }
 
 export function useItemCount() {

@@ -9,6 +9,7 @@ import {
   DexieReminderRepository,
   DexieUnitOfWork,
 } from '@/data/repositories/dexie-repositories'
+import { CatalogService } from '@/application/services/catalog-service'
 import { ItemService } from '@/application/services/item-service'
 import { PhotoService } from '@/application/services/photo-service'
 
@@ -34,7 +35,8 @@ export function createContainer(database: AuraDatabase) {
   const uow = new DexieUnitOfWork(database)
   const itemService = new ItemService({ uow, ...repos })
   const photoService = new PhotoService({ uow, items: repos.items, photos: repos.photos })
-  return { repos, uow, itemService, photoService }
+  const catalogService = new CatalogService({ uow, ...repos })
+  return { repos, uow, itemService, photoService, catalogService }
 }
 
 export type Container = ReturnType<typeof createContainer>

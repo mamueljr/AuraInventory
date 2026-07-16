@@ -1,15 +1,18 @@
-import { PackageOpenIcon, PlusIcon, SparklesIcon } from 'lucide-react'
+import { PackageOpenIcon, PlusIcon, SearchXIcon, SparklesIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import { useRecentItems } from '@/application/queries/use-items'
+import { useFilteredItems } from '@/application/queries/use-items'
 import { useSeedDemo } from '@/application/queries/use-catalog'
+import { isFilterActive } from '@/domain/inventory-filter'
 import { Badge, Button, Skeleton } from '@/design-system'
+import { FilterBar } from '@/features/inventory/components/FilterBar'
+import { useInventoryFilter } from '@/features/inventory/hooks/use-inventory-filter'
 import { ItemGrid } from '@/features/inventory/components/ItemGrid'
 
-const GRID_LIMIT = 10000
-
 export function InventoryPage() {
-  const { data: items, isLoading } = useRecentItems(GRID_LIMIT)
+  const [filter] = useInventoryFilter()
+  const { data: items, isLoading } = useFilteredItems(filter)
+  const filtering = isFilterActive(filter)
   const seed = useSeedDemo()
 
   return (
@@ -24,6 +27,8 @@ export function InventoryPage() {
         </Button>
       </div>
 
+      <FilterBar />
+
       {isLoading ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {Array.from({ length: 10 }, (_, i) => (
@@ -32,6 +37,11 @@ export function InventoryPage() {
         </div>
       ) : items && items.length > 0 ? (
         <ItemGrid items={items} />
+      ) : filtering ? (
+        <div className="flex flex-col items-center gap-3 py-24 text-center">
+          <SearchXIcon className="text-aura-faint size-10" strokeWidth={1.5} />
+          <p className="text-aura-muted">Ningún objeto coincide con estos filtros.</p>
+        </div>
       ) : (
         <div className="flex flex-col items-center gap-4 py-24 text-center">
           <div className="bg-aura-accent-soft text-aura-accent flex size-16 items-center justify-center rounded-full">

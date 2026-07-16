@@ -24,6 +24,10 @@ export const router = createBrowserRouter(
           path: 'items/:id/edit',
           lazy: lazyPage(() => import('@/pages/ItemFormPage'), 'ItemFormPage'),
         },
+        {
+          path: 'organize',
+          lazy: lazyPage(() => import('@/pages/OrganizePage'), 'OrganizePage'),
+        },
         { path: 'design', lazy: lazyPage(() => import('@/pages/DesignPage'), 'DesignPage') },
       ],
     },

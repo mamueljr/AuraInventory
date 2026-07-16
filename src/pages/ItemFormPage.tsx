@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useCategories, useRooms, useTags } from '@/application/queries/use-catalog'
+import { useCollections } from '@/application/queries/use-collections'
+import { useLocations } from '@/application/queries/use-organize'
 import { useCreateItemWithPhotos, useItem, useUpdateItem } from '@/application/queries/use-items'
 import { useAddPhotos } from '@/application/queries/use-photos'
 import type { Item, ItemDraft } from '@/domain/entities'
@@ -38,6 +40,8 @@ interface FormState {
   categoryId: string
   subcategoryId: string
   roomId: string
+  locationId: string
+  collectionIds: string[]
   quantity: string
   brand: string
   model: string
@@ -62,6 +66,8 @@ const EMPTY: FormState = {
   categoryId: '',
   subcategoryId: '',
   roomId: '',
+  locationId: '',
+  collectionIds: [],
   quantity: '1',
   brand: '',
   model: '',
@@ -89,6 +95,8 @@ function toDraft(f: FormState): ItemDraft {
     categoryId: opt(f.categoryId),
     subcategoryId: opt(f.subcategoryId),
     roomId: opt(f.roomId),
+    locationId: opt(f.locationId),
+    collectionIds: f.collectionIds,
     quantity: Number(f.quantity) || 1,
     brand: opt(f.brand),
     model: opt(f.model),
@@ -127,6 +135,7 @@ function fromItem(item: Item): FormState {
         categoryId: item.categoryId,
         subcategoryId: item.subcategoryId,
         roomId: item.roomId,
+        locationId: item.locationId,
         brand: item.brand,
         model: item.model,
         color: item.color,
@@ -144,6 +153,7 @@ function fromItem(item: Item): FormState {
     purchasePrice: item.purchasePrice?.toString() ?? '',
     currentValue: item.currentValue?.toString() ?? '',
     tagIds: item.tagIds,
+    collectionIds: item.collectionIds,
     favorite: item.favorite,
   }
 }
@@ -165,6 +175,7 @@ function ItemForm({ itemId, initial }: { itemId?: string; initial: FormState }) 
   const { data: rooms } = useRooms()
   const { data: categories } = useCategories()
   const { data: tags } = useTags()
+  const { data: collections } = useCollections()
 
   const createItem = useCreateItemWithPhotos()
   const updateItem = useUpdateItem()
@@ -174,6 +185,8 @@ function ItemForm({ itemId, initial }: { itemId?: string; initial: FormState }) 
   const [form, setForm] = useState<FormState>(initial)
   const [files, setFiles] = useState<File[]>([])
   const [saving, setSaving] = useState(false)
+
+  const { data: locations } = useLocations(form.roomId || undefined)
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }))
@@ -288,11 +301,31 @@ function ItemForm({ itemId, initial }: { itemId?: string; initial: FormState }) 
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Habitación">
-                  <NativeSelect value={form.roomId} onChange={(e) => set('roomId', e.target.value)}>
+                  <NativeSelect
+                    value={form.roomId}
+                    onChange={(e) => {
+                      set('roomId', e.target.value)
+                      set('locationId', '')
+                    }}
+                  >
                     <option value="">Sin asignar</option>
                     {rooms?.map((r) => (
                       <option key={r.id} value={r.id}>
                         {r.name}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </Field>
+                <Field label="Ubicación">
+                  <NativeSelect
+                    value={form.locationId}
+                    onChange={(e) => set('locationId', e.target.value)}
+                    disabled={!form.roomId || !locations?.length}
+                  >
+                    <option value="">—</option>
+                    {locations?.map((l) => (
+                      <option key={l.id} value={l.id}>
+                        {l.name}
                       </option>
                     ))}
                   </NativeSelect>
@@ -371,6 +404,34 @@ function ItemForm({ itemId, initial }: { itemId?: string; initial: FormState }) 
                         >
                           <Badge variant={active ? 'accent' : 'outline'}>
                             {active && <CheckIcon />} {tag.name}
+                          </Badge>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </Field>
+              )}
+              {collections && collections.length > 0 && (
+                <Field label="Colecciones">
+                  <div className="flex flex-wrap gap-1.5">
+                    {collections.map((col) => {
+                      const active = form.collectionIds.includes(col.id)
+                      return (
+                        <button
+                          key={col.id}
+                          type="button"
+                          aria-pressed={active}
+                          onClick={() =>
+                            set(
+                              'collectionIds',
+                              active
+                                ? form.collectionIds.filter((c) => c !== col.id)
+                                : [...form.collectionIds, col.id],
+                            )
+                          }
+                        >
+                          <Badge variant={active ? 'accent' : 'outline'}>
+                            {active && <CheckIcon />} {col.name}
                           </Badge>
                         </button>
                       )
