@@ -24,7 +24,7 @@ export function useItem(id: string) {
 }
 
 /** Inventario activo con filtro combinable aplicado en memoria. */
-export function useFilteredItems(filter: InventoryFilter, limit = 10000) {
+export function useFilteredItems(filter: InventoryFilter, limit = 100000) {
   const query = useRecentItems(limit)
   const filtered = useMemo(
     () => query.data?.filter((item) => matchesFilter(item, filter)),

@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { Toaster, ThemeToggle } from '@/design-system'
+import { SearchCommand } from '@/features/search/components/SearchCommand'
 import { AppHeader } from '@/layouts/AppHeader'
 
 export function RootLayout() {
@@ -18,6 +19,7 @@ export function RootLayout() {
       <div className={isLanding ? undefined : 'pt-14'}>
         <Outlet />
       </div>
+      <SearchCommand />
       <Toaster />
     </div>
   )

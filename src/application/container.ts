@@ -12,6 +12,7 @@ import {
 import { CatalogService } from '@/application/services/catalog-service'
 import { ItemService } from '@/application/services/item-service'
 import { PhotoService } from '@/application/services/photo-service'
+import { SearchService } from '@/application/services/search-service'
 
 /**
  * Composition root: único lugar donde application conoce las implementaciones
@@ -36,7 +37,9 @@ export function createContainer(database: AuraDatabase) {
   const itemService = new ItemService({ uow, ...repos })
   const photoService = new PhotoService({ uow, items: repos.items, photos: repos.photos })
   const catalogService = new CatalogService({ uow, ...repos })
-  return { repos, uow, itemService, photoService, catalogService }
+  const searchService = new SearchService(repos)
+  searchService.attachDirtyTracking(database)
+  return { repos, uow, itemService, photoService, catalogService, searchService }
 }
 
 export type Container = ReturnType<typeof createContainer>

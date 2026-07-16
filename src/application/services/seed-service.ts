@@ -1,6 +1,6 @@
-import type { Category, Room, Tag } from '@/domain/entities'
+import type { Category, Item, Room, Tag } from '@/domain/entities'
 import type { Container } from '@/application/container'
-import { newId } from '@/utils/ids'
+import { newId, nowIso } from '@/utils/ids'
 
 const ROOMS = ['Sala', 'Cocina', 'Recámara', 'Oficina', 'Cochera']
 const CATEGORIES: Record<string, string[]> = {
@@ -88,4 +88,52 @@ export async function seedDemoData(container: Container): Promise<boolean> {
     })
   }
   return true
+}
+
+const BULK_NOUNS = [
+  'Lámpara',
+  'Silla',
+  'Libro',
+  'Cable',
+  'Monitor',
+  'Taza',
+  'Herramienta',
+  'Juego',
+  'Bocina',
+  'Cámara',
+]
+const BULK_BRANDS = ['Bosch', 'Sony', 'IKEA', 'Logitech', 'Generic', 'Steren', 'Truper', 'HP']
+
+/**
+ * Benchmark: siembra `count` objetos sintéticos (sin fotos) en lotes.
+ * Solo para desarrollo/pruebas de rendimiento.
+ */
+export async function seedBulkItems(container: Container, count: number): Promise<number> {
+  const { repos } = container
+  const rooms = await repos.rooms.getAll()
+  const now = nowIso()
+  const BATCH = 5000
+
+  for (let start = 0; start < count; start += BATCH) {
+    const batch: Item[] = Array.from({ length: Math.min(BATCH, count - start) }, (_, j) => {
+      const i = start + j
+      return {
+        id: newId(),
+        name: `${BULK_NOUNS[i % BULK_NOUNS.length]} ${i}`,
+        brand: BULK_BRANDS[i % BULK_BRANDS.length],
+        serialNumber: `SN-${i.toString(36).toUpperCase()}-${i}`,
+        quantity: 1,
+        favorite: i % 11 === 0,
+        purchasePrice: (i % 500) * 10,
+        currency: 'MXN',
+        roomId: rooms.length ? rooms[i % rooms.length].id : undefined,
+        tagIds: [],
+        collectionIds: [],
+        createdAt: now,
+        updatedAt: now,
+      }
+    })
+    await repos.items.bulkPut(batch)
+  }
+  return count
 }

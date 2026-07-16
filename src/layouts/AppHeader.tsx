@@ -1,6 +1,7 @@
+import { SearchIcon } from 'lucide-react'
 import { NavLink, Link } from 'react-router-dom'
-import { ThemeToggle } from '@/design-system'
-import { cn } from '@/design-system'
+import { Button, ThemeToggle, cn } from '@/design-system'
+import { useSearchStore } from '@/features/search/store'
 
 const links = [
   { to: '/items', label: 'Objetos' },
@@ -36,7 +37,18 @@ export function AppHeader() {
             </NavLink>
           ))}
         </nav>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => useSearchStore.getState().setOpen(true)}
+            className="text-aura-muted gap-2"
+          >
+            <SearchIcon /> <span className="max-sm:hidden">Buscar</span>
+            <kbd className="bg-aura-surface-2 rounded px-1.5 py-0.5 font-sans text-[10px] max-sm:hidden">
+              ⌘K
+            </kbd>
+          </Button>
           <ThemeToggle />
         </div>
       </div>
