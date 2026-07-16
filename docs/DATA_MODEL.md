@@ -157,13 +157,16 @@ interface Reminder {
 ## Índices Dexie (v1)
 
 ```
-items:        id, categoryId, roomId, updatedAt, favorite, *tagIds, *collectionIds
+items:        id, categoryId, roomId, updatedAt, *tagIds, *collectionIds
 photos:       id, itemId
 attachments:  id, itemId
 itemEvents:   id, itemId, date, type
 loans:        id, itemId, returnedAt
-reminders:    id, dueAt, done, itemId
+reminders:    id, itemId, dueAt
 categories/rooms/locations/tags/collections: id (+ parentId / roomId donde aplica)
 ```
+
+Nota: IndexedDB no indexa booleanos — `favorite` y `done` se filtran en memoria
+(sobre resultados ya acotados por índice); si algún día pesa, se migra a 0/1.
 
 Los blobs viven solo en `photos`/`attachments`: listar items jamás carga imágenes.

@@ -244,6 +244,10 @@ export function DesignPage() {
       </Section>
 
       <Section title="Skeleton">
+        <p className="text-aura-muted -mt-2 text-sm">
+          Placeholder de carga: así se verá el contenido mientras llegan los datos (no es que algo
+          esté cargando aquí — el pulso es intencional).
+        </p>
         <div className="flex items-center gap-4">
           <Skeleton className="rounded-aura size-14" />
           <div className="flex-1 space-y-2">
