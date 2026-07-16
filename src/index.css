@@ -1,40 +1,17 @@
 @import 'tailwindcss';
-
-/*
- * Tokens semilla del Aura Design System.
- * El sistema completo (tipografía, radios, sombras, blur, escalas) llega en v0.2;
- * aquí solo lo mínimo para que el shell tenga identidad en ambos temas.
- */
-:root {
-  --aura-bg: oklch(98.5% 0.002 260);
-  --aura-fg: oklch(20% 0.015 260);
-  --aura-muted: oklch(55% 0.015 260);
-  --aura-accent: oklch(62% 0.19 285);
-  --aura-accent-soft: oklch(62% 0.19 285 / 14%);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --aura-bg: oklch(16% 0.012 275);
-    --aura-fg: oklch(95% 0.005 260);
-    --aura-muted: oklch(65% 0.012 260);
-    --aura-accent: oklch(72% 0.17 290);
-    --aura-accent-soft: oklch(72% 0.17 290 / 16%);
-  }
-}
-
-@theme inline {
-  --color-aura-bg: var(--aura-bg);
-  --color-aura-fg: var(--aura-fg);
-  --color-aura-muted: var(--aura-muted);
-  --color-aura-accent: var(--aura-accent);
-  --color-aura-accent-soft: var(--aura-accent-soft);
-  --font-sans:
-    'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-}
+@import 'tw-animate-css';
+@import './design-system/tokens.css';
 
 html {
   color-scheme: light dark;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
 }
 
 body {

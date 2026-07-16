@@ -17,7 +17,7 @@ sincronización futura se monta encima sin tocar la UI.
 | Capa         | Tecnología                                             | Notas                                                         |
 | ------------ | ------------------------------------------------------ | ------------------------------------------------------------- |
 | Build        | Vite + TypeScript (strict)                             | Misma base que Aura Music → consistencia del ecosistema       |
-| UI           | React 18, TailwindCSS v4, shadcn/ui (Radix)            | Componentes propios estilo shadcn, tematizados por ADS        |
+| UI           | React 19, TailwindCSS v4, shadcn/ui (Radix)            | Componentes propios estilo shadcn, tematizados por ADS        |
 | Animación    | Framer Motion                                          | Transiciones de página, microinteracciones, layout animations |
 | Routing      | React Router                                           | BrowserRouter + truco `404.html` para GitHub Pages            |
 | Estado UI    | Zustand                                                | Solo estado efímero de UI (modales, filtros activos, tema)    |

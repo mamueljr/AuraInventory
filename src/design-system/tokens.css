@@ -1,0 +1,128 @@
+/*
+ * Aura Design System — tokens v1
+ * Paleta violeta oklch. El tema oscuro se activa con la clase `.dark` en <html>
+ * (la resuelve el store de tema; `system` sigue a prefers-color-scheme).
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* superficies */
+  --aura-bg: oklch(98.5% 0.004 290);
+  --aura-surface: oklch(100% 0 0);
+  --aura-surface-2: oklch(96.5% 0.006 290);
+  --aura-glass: oklch(100% 0 0 / 62%);
+  --aura-border: oklch(91% 0.012 290);
+  --aura-input: oklch(93% 0.01 290);
+  --aura-ring: oklch(58% 0.21 288 / 55%);
+
+  /* texto */
+  --aura-fg: oklch(21% 0.02 290);
+  --aura-muted: oklch(50% 0.02 290);
+  --aura-faint: oklch(65% 0.015 290);
+
+  /* marca */
+  --aura-accent: oklch(56% 0.21 288);
+  --aura-accent-hover: oklch(50% 0.21 288);
+  --aura-accent-fg: oklch(99% 0 0);
+  --aura-accent-soft: oklch(56% 0.21 288 / 11%);
+
+  /* estados */
+  --aura-destructive: oklch(56% 0.2 26);
+  --aura-destructive-fg: oklch(99% 0 0);
+  --aura-success: oklch(56% 0.14 155);
+  --aura-warning: oklch(70% 0.14 75);
+
+  /* forma */
+  --aura-radius: 1rem;
+  --aura-radius-control: 0.75rem;
+  --aura-blur-glass: 16px;
+
+  /* elevación */
+  --aura-shadow-sm: 0 1px 2px oklch(30% 0.04 290 / 7%);
+  --aura-shadow-md: 0 2px 6px oklch(30% 0.04 290 / 7%), 0 8px 24px oklch(30% 0.04 290 / 9%);
+  --aura-shadow-lg: 0 4px 12px oklch(30% 0.04 290 / 9%), 0 20px 48px oklch(30% 0.04 290 / 13%);
+  --aura-shadow-glow: 0 0 32px oklch(56% 0.21 288 / 22%);
+}
+
+.dark {
+  --aura-bg: oklch(15.5% 0.014 288);
+  --aura-surface: oklch(19% 0.018 288);
+  --aura-surface-2: oklch(23% 0.02 288);
+  --aura-glass: oklch(20% 0.02 288 / 55%);
+  --aura-border: oklch(29% 0.022 288);
+  --aura-input: oklch(26% 0.02 288);
+  --aura-ring: oklch(72% 0.17 290 / 55%);
+
+  --aura-fg: oklch(95.5% 0.006 290);
+  --aura-muted: oklch(69% 0.015 290);
+  --aura-faint: oklch(52% 0.015 290);
+
+  --aura-accent: oklch(66% 0.19 290);
+  --aura-accent-hover: oklch(72% 0.17 290);
+  --aura-accent-fg: oklch(13% 0.03 290);
+  --aura-accent-soft: oklch(66% 0.19 290 / 15%);
+
+  --aura-destructive: oklch(64% 0.19 26);
+  --aura-destructive-fg: oklch(13% 0.03 26);
+  --aura-success: oklch(68% 0.14 155);
+  --aura-warning: oklch(76% 0.13 75);
+
+  --aura-shadow-sm: 0 1px 2px oklch(0% 0 0 / 30%);
+  --aura-shadow-md: 0 2px 6px oklch(0% 0 0 / 30%), 0 8px 24px oklch(0% 0 0 / 35%);
+  --aura-shadow-lg: 0 4px 12px oklch(0% 0 0 / 35%), 0 20px 48px oklch(0% 0 0 / 45%);
+  --aura-shadow-glow: 0 0 36px oklch(66% 0.19 290 / 30%);
+}
+
+@theme inline {
+  --color-aura-bg: var(--aura-bg);
+  --color-aura-surface: var(--aura-surface);
+  --color-aura-surface-2: var(--aura-surface-2);
+  --color-aura-glass: var(--aura-glass);
+  --color-aura-border: var(--aura-border);
+  --color-aura-input: var(--aura-input);
+  --color-aura-ring: var(--aura-ring);
+  --color-aura-fg: var(--aura-fg);
+  --color-aura-muted: var(--aura-muted);
+  --color-aura-faint: var(--aura-faint);
+  --color-aura-accent: var(--aura-accent);
+  --color-aura-accent-hover: var(--aura-accent-hover);
+  --color-aura-accent-fg: var(--aura-accent-fg);
+  --color-aura-accent-soft: var(--aura-accent-soft);
+  --color-aura-destructive: var(--aura-destructive);
+  --color-aura-destructive-fg: var(--aura-destructive-fg);
+  --color-aura-success: var(--aura-success);
+  --color-aura-warning: var(--aura-warning);
+
+  --radius-aura: var(--aura-radius);
+  --radius-control: var(--aura-radius-control);
+
+  --shadow-aura-sm: var(--aura-shadow-sm);
+  --shadow-aura-md: var(--aura-shadow-md);
+  --shadow-aura-lg: var(--aura-shadow-lg);
+  --shadow-aura-glow: var(--aura-shadow-glow);
+
+  --font-sans:
+    'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --animate-aura-in: aura-in 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) both;
+}
+
+@keyframes aura-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Panel glass reutilizable (glassmorphism ligero) */
+@utility glass {
+  background: var(--aura-glass);
+  backdrop-filter: blur(var(--aura-blur-glass));
+  -webkit-backdrop-filter: blur(var(--aura-blur-glass));
+  border: 1px solid var(--aura-border);
+}

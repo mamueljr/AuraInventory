@@ -62,4 +62,9 @@ export default tseslint.config(
     files: ['**/*.test.{ts,tsx}', 'src/test/**'],
     rules: { 'import/no-restricted-paths': 'off' },
   },
+  {
+    // Librería de componentes: exporta variantes CVA junto al componente (patrón shadcn)
+    files: ['src/design-system/**'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 )

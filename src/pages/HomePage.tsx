@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom'
+import { Button } from '@/design-system'
+
 export function HomePage() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-6 px-6 text-center">
@@ -14,6 +17,9 @@ export function HomePage() {
       <p className="text-aura-muted relative max-w-md text-lg text-pretty">
         Todo lo que tienes, hermoso y en un solo lugar. Offline primero, siempre contigo.
       </p>
+      <Button asChild variant="outline" className="relative">
+        <Link to="/design">Explorar el design system</Link>
+      </Button>
     </main>
   )
 }
