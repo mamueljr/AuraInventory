@@ -21,6 +21,10 @@ import {
   Skeleton,
   cn,
 } from '@/design-system'
+import { AttachmentsCard } from '@/features/passport/components/AttachmentsCard'
+import { Lightbox } from '@/features/passport/components/Lightbox'
+import { LoanCard } from '@/features/passport/components/LoanCard'
+import { TimelineCard } from '@/features/passport/components/TimelineCard'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { useObjectUrl } from '@/utils/use-object-url'
 
@@ -33,7 +37,7 @@ const CONDITION_LABEL: Record<string, string> = {
   broken: 'Descompuesto',
 }
 
-function Hero({ photo }: { photo: Photo | undefined }) {
+function Hero({ photo, onOpen }: { photo: Photo | undefined; onOpen?: () => void }) {
   const url = useObjectUrl(photo?.blob)
   if (!photo)
     return (
@@ -42,9 +46,14 @@ function Hero({ photo }: { photo: Photo | undefined }) {
       </div>
     )
   return (
-    <div className="bg-aura-surface-2 aspect-video">
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label="Ver foto a pantalla completa"
+      className="bg-aura-surface-2 block aspect-video w-full cursor-zoom-in"
+    >
       {url && <img src={url} alt="" className="size-full object-contain" />}
-    </div>
+    </button>
   )
 }
 
@@ -85,6 +94,7 @@ export function ItemDetailPage() {
   const deleteItem = useDeleteItem()
   const restoreItem = useRestoreItem()
   const [selectedPhoto, setSelectedPhoto] = useState<string>()
+  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   if (isLoading) {
     return (
@@ -134,7 +144,7 @@ export function ItemDetailPage() {
       </Button>
 
       <Card className="overflow-hidden">
-        <Hero photo={current} />
+        <Hero photo={current} onOpen={() => setLightboxOpen(true)} />
         {photos && photos.length > 1 && (
           <div className="flex gap-2 overflow-x-auto p-3">
             {photos.map((p) => (
@@ -179,6 +189,23 @@ export function ItemDetailPage() {
       </div>
 
       {item.description && <p className="text-aura-muted mt-3">{item.description}</p>}
+
+      <div className="mt-4">
+        <LoanCard itemId={id} />
+      </div>
+
+      {photos && photos.length > 0 && (
+        <Lightbox
+          photos={photos}
+          index={Math.max(
+            0,
+            photos.findIndex((p) => p.id === current?.id),
+          )}
+          onIndexChange={(i) => setSelectedPhoto(photos[i]?.id)}
+          open={lightboxOpen}
+          onOpenChange={setLightboxOpen}
+        />
+      )}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <Card>
@@ -230,6 +257,11 @@ export function ItemDetailPage() {
           </CardContent>
         </Card>
       )}
+
+      <div className="mt-4 space-y-4">
+        <AttachmentsCard itemId={id} />
+        <TimelineCard itemId={id} />
+      </div>
     </main>
   )
 }
