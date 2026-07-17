@@ -6,7 +6,6 @@ import { useCatalogActions } from '@/application/queries/use-organize'
 import { useRooms } from '@/application/queries/use-catalog'
 import { Badge, Button, Label, Skeleton, Switch } from '@/design-system'
 import { MapBoard, type RoomStats } from '@/features/map/components/MapBoard'
-import { findFreeSpot } from '@/features/map/lib/placement'
 
 export function MapPage() {
   const { data: rooms, isLoading } = useRooms()
@@ -44,7 +43,6 @@ export function MapPage() {
     stats?.byRoom.map((r) => [r.id, { count: r.count, value: r.value }]) ?? [],
   )
   const unplaced = rooms.filter((r) => !r.mapShape)
-  const placedShapes = rooms.filter((r) => r.mapShape).map((r) => r.mapShape!)
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-8">
@@ -76,7 +74,7 @@ export function MapPage() {
             <button
               key={room.id}
               type="button"
-              onClick={() => actions.setRoomShape.mutate([room.id, findFreeSpot(placedShapes)])}
+              onClick={() => actions.placeRoomOnMap.mutate([room.id])}
             >
               <Badge variant="outline" className="gap-1.5">
                 <MapPinPlusIcon className="size-3" /> {room.name}

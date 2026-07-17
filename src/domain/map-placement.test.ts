@@ -8,7 +8,7 @@ import {
   GRID_ROWS,
   MIN_H,
   MIN_W,
-} from '@/features/map/lib/placement'
+} from '@/domain/map-placement'
 
 describe('clampShape', () => {
   it('impone tamaño mínimo y mantiene la pieza dentro del tablero', () => {

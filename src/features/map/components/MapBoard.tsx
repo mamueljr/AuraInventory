@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { MapShape, Room } from '@/domain/entities'
 import { cn } from '@/design-system'
-import { GRID_COLS, GRID_ROWS, clampShape } from '@/features/map/lib/placement'
+import { GRID_COLS, GRID_ROWS, clampShape } from '@/domain/map-placement'
 import { formatCurrencyCompact } from '@/utils/format'
 
 export interface RoomStats {
@@ -47,7 +47,11 @@ export function MapBoard({ rooms, stats, editing, tilted, onShapeChange }: MapBo
   const startDrag = (e: React.PointerEvent, room: Room, mode: DragState['mode']) => {
     if (!editing || !room.mapShape) return
     e.preventDefault()
-    ;(e.target as Element).setPointerCapture(e.pointerId)
+    try {
+      ;(e.target as Element).setPointerCapture(e.pointerId)
+    } catch {
+      // algunos pointers (sintéticos, pen huérfano) no admiten captura; el drag funciona igual
+    }
     setDrag({ roomId: room.id, mode, startX: e.clientX, startY: e.clientY, origin: room.mapShape })
   }
 

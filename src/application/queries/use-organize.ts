@@ -55,5 +55,6 @@ export function useCatalogActions() {
       (id: string, shape: Parameters<typeof catalogService.setRoomShape>[1]) =>
         catalogService.setRoomShape(id, shape),
     ),
+    placeRoomOnMap: useCatalogMutation((id: string) => catalogService.placeRoomOnMap(id)),
   }
 }

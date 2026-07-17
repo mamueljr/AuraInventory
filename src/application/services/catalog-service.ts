@@ -1,4 +1,5 @@
 import type { Category, Collection, Location, Room, Tag } from '@/domain/entities'
+import { findFreeSpot } from '@/domain/map-placement'
 import type {
   CategoryRepository,
   CollectionRepository,
@@ -71,6 +72,19 @@ export class CatalogService {
   async setRoomShape(id: string, mapShape: Room['mapShape']): Promise<void> {
     const room = await this.mustGet(this.deps.rooms, id, 'habitación')
     await this.deps.rooms.put({ ...room, mapShape })
+  }
+
+  /**
+   * Coloca la habitación en el primer hueco libre del plano. El hueco se
+   * calcula aquí con datos frescos (calcularlo en la UI usa estado stale y
+   * dos colocaciones rápidas terminan traslapadas).
+   */
+  async placeRoomOnMap(id: string): Promise<void> {
+    const room = await this.mustGet(this.deps.rooms, id, 'habitación')
+    const others = (await this.deps.rooms.getAll())
+      .filter((r) => r.id !== id && r.mapShape)
+      .map((r) => r.mapShape!)
+    await this.deps.rooms.put({ ...room, mapShape: findFreeSpot(others) })
   }
 
   // ── Ubicaciones ─────────────────────────────────────────────────
