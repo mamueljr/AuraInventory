@@ -51,5 +51,9 @@ export function useCatalogActions() {
     deleteTag: useCatalogMutation((id: string) => catalogService.deleteTag(id)),
     createCollection: useCatalogMutation((name: string) => catalogService.createCollection(name)),
     deleteCollection: useCatalogMutation((id: string) => catalogService.deleteCollection(id)),
+    setRoomShape: useCatalogMutation(
+      (id: string, shape: Parameters<typeof catalogService.setRoomShape>[1]) =>
+        catalogService.setRoomShape(id, shape),
+    ),
   }
 }

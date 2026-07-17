@@ -67,6 +67,12 @@ export class CatalogService {
     })
   }
 
+  /** Posición/tamaño de la habitación en el Mapa Inteligente (undefined = fuera del plano). */
+  async setRoomShape(id: string, mapShape: Room['mapShape']): Promise<void> {
+    const room = await this.mustGet(this.deps.rooms, id, 'habitación')
+    await this.deps.rooms.put({ ...room, mapShape })
+  }
+
   // ── Ubicaciones ─────────────────────────────────────────────────
   async createLocation(roomId: string, name: string): Promise<Location> {
     await this.mustGet(this.deps.rooms, roomId, 'habitación')

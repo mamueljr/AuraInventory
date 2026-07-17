@@ -6,6 +6,7 @@ import { useSearchStore } from '@/features/search/store'
 const links = [
   { to: '/dashboard', label: 'Panel' },
   { to: '/items', label: 'Objetos' },
+  { to: '/map', label: 'Mapa' },
   { to: '/organize', label: 'Organizar' },
   { to: '/design', label: 'Design' },
 ]
