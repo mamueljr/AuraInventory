@@ -33,6 +33,10 @@ export const router = createBrowserRouter(
           path: 'organize',
           lazy: lazyPage(() => import('@/pages/OrganizePage'), 'OrganizePage'),
         },
+        {
+          path: 'settings',
+          lazy: lazyPage(() => import('@/pages/SettingsPage'), 'SettingsPage'),
+        },
         { path: 'design', lazy: lazyPage(() => import('@/pages/DesignPage'), 'DesignPage') },
       ],
     },

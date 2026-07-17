@@ -10,6 +10,8 @@ import {
   DexieUnitOfWork,
 } from '@/data/repositories/dexie-repositories'
 import { AttachmentService } from '@/application/services/attachment-service'
+import { BackupService } from '@/application/services/backup-service'
+import { NotificationService } from '@/application/services/notification-service'
 import { CatalogService } from '@/application/services/catalog-service'
 import { ItemService } from '@/application/services/item-service'
 import { PhotoService } from '@/application/services/photo-service'
@@ -41,7 +43,19 @@ export function createContainer(database: AuraDatabase) {
   const searchService = new SearchService(repos)
   searchService.attachDirtyTracking(database)
   const attachmentService = new AttachmentService(repos)
-  return { repos, uow, itemService, photoService, catalogService, searchService, attachmentService }
+  const backupService = new BackupService(database)
+  const notificationService = new NotificationService(repos)
+  return {
+    repos,
+    uow,
+    itemService,
+    photoService,
+    catalogService,
+    searchService,
+    attachmentService,
+    backupService,
+    notificationService,
+  }
 }
 
 export type Container = ReturnType<typeof createContainer>

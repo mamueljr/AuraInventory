@@ -1,4 +1,11 @@
-import { ArrowLeftIcon, HeartIcon, PackageIcon, PencilIcon, Trash2Icon } from 'lucide-react'
+import {
+  ArrowLeftIcon,
+  HeartIcon,
+  PackageIcon,
+  PencilIcon,
+  PrinterIcon,
+  Trash2Icon,
+} from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -178,10 +185,19 @@ export function ItemDetailPage() {
         >
           <HeartIcon className={cn(item.favorite && 'fill-current')} />
         </Button>
-        <Button asChild variant="outline" size="icon" aria-label="Editar">
+        <Button asChild variant="outline" size="icon" aria-label="Editar" className="no-print">
           <Link to={`/items/${id}/edit`}>
             <PencilIcon />
           </Link>
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label="Imprimir ficha"
+          className="no-print"
+          onClick={() => window.print()}
+        >
+          <PrinterIcon />
         </Button>
         <Button variant="outline" size="icon" aria-label="Enviar a papelera" onClick={handleDelete}>
           <Trash2Icon />

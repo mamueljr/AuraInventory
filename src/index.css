@@ -17,3 +17,26 @@ html:not(.dark) {
 body {
   @apply bg-aura-bg text-aura-fg font-sans antialiased;
 }
+
+/* Ficha imprimible del Pasaporte Digital: solo el contenido, en claro */
+@media print {
+  header,
+  [data-sonner-toaster],
+  .no-print {
+    display: none !important;
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    --aura-bg: oklch(100% 0 0);
+    --aura-surface: oklch(100% 0 0);
+    --aura-fg: oklch(20% 0.015 260);
+    --aura-muted: oklch(45% 0.015 260);
+    --aura-border: oklch(85% 0.01 290);
+  }
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}

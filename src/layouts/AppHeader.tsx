@@ -1,6 +1,7 @@
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon, SettingsIcon } from 'lucide-react'
 import { NavLink, Link } from 'react-router-dom'
 import { Button, ThemeToggle, cn } from '@/design-system'
+import { NotificationBell } from '@/features/notifications/NotificationBell'
 import { useSearchStore } from '@/features/search/store'
 
 const links = [
@@ -50,6 +51,12 @@ export function AppHeader() {
             <kbd className="bg-aura-surface-2 rounded px-1.5 py-0.5 font-sans text-[10px] max-sm:hidden">
               ⌘K
             </kbd>
+          </Button>
+          <NotificationBell />
+          <Button asChild variant="ghost" size="icon" aria-label="Ajustes">
+            <NavLink to="/settings">
+              <SettingsIcon />
+            </NavLink>
           </Button>
           <ThemeToggle />
         </div>
