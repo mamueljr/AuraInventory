@@ -1,4 +1,4 @@
-import { CameraIcon, XIcon } from 'lucide-react'
+import { CameraIcon, ImageIcon, XIcon } from 'lucide-react'
 import { useRef } from 'react'
 import { Button } from '@/design-system'
 import { useObjectUrl } from '@/utils/use-object-url'
@@ -26,22 +26,36 @@ function Preview({ file, onRemove }: { file: File; onRemove: () => void }) {
   )
 }
 
-/** Selección/captura de fotos con previews locales (se comprimen al guardar). */
+/**
+ * Selección/captura de fotos con previews locales (se comprimen al guardar).
+ * Dos entradas: cámara directa (capture="environment", clave en móvil) y galería.
+ */
 export function PhotoPicker({ files, onChange }: PhotoPickerProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const cameraRef = useRef<HTMLInputElement>(null)
+  const galleryRef = useRef<HTMLInputElement>(null)
+
+  const addFrom = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange([...files, ...Array.from(e.target.files ?? [])])
+    e.target.value = ''
+  }
 
   return (
     <div className="space-y-3">
       <input
-        ref={inputRef}
+        ref={cameraRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={addFrom}
+      />
+      <input
+        ref={galleryRef}
         type="file"
         accept="image/*"
         multiple
         className="hidden"
-        onChange={(e) => {
-          onChange([...files, ...Array.from(e.target.files ?? [])])
-          e.target.value = ''
-        }}
+        onChange={addFrom}
       />
       {files.length > 0 && (
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
@@ -54,9 +68,14 @@ export function PhotoPicker({ files, onChange }: PhotoPickerProps) {
           ))}
         </div>
       )}
-      <Button type="button" variant="outline" onClick={() => inputRef.current?.click()}>
-        <CameraIcon /> {files.length ? 'Agregar más fotos' : 'Tomar o elegir fotos'}
-      </Button>
+      <div className="flex flex-wrap gap-2">
+        <Button type="button" variant="outline" onClick={() => cameraRef.current?.click()}>
+          <CameraIcon /> Tomar foto
+        </Button>
+        <Button type="button" variant="outline" onClick={() => galleryRef.current?.click()}>
+          <ImageIcon /> Elegir de galería
+        </Button>
+      </div>
       <p className="text-aura-faint text-xs">
         Se comprimen automáticamente a WebP (máx. 1600px) con miniatura para el grid.
       </p>
