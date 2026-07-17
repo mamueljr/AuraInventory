@@ -4,6 +4,7 @@ import { Button, ThemeToggle, cn } from '@/design-system'
 import { useSearchStore } from '@/features/search/store'
 
 const links = [
+  { to: '/dashboard', label: 'Panel' },
   { to: '/items', label: 'Objetos' },
   { to: '/organize', label: 'Organizar' },
   { to: '/design', label: 'Design' },

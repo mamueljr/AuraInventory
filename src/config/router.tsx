@@ -14,6 +14,10 @@ export const router = createBrowserRouter(
       element: <RootLayout />,
       children: [
         { index: true, element: <HomePage /> },
+        {
+          path: 'dashboard',
+          lazy: lazyPage(() => import('@/pages/DashboardPage'), 'DashboardPage'),
+        },
         { path: 'items', element: <InventoryPage /> },
         { path: 'items/new', lazy: lazyPage(() => import('@/pages/ItemFormPage'), 'ItemFormPage') },
         {
