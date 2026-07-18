@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/AuraInventory/favicon.svg" />
+    <link rel="apple-touch-icon" href="/AuraInventory/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Aura" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Aura Inventory — tu inventario personal, hermoso y offline."
+    />
+    <meta name="theme-color" content="#0b0b0f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <title>Aura Inventory</title>
+    <script>
+      // SPA en GitHub Pages: 404.html redirige a /?/ruta — aquí la restauramos.
+      // https://github.com/rafgraph/spa-github-pages
+      ;(function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&')
+            })
+            .join('?')
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash)
+        }
+      })(window.location)
+    </script>
+    <script type="module" crossorigin src="/AuraInventory/assets/index-BVI2MQkt.js"></script>
+    <link rel="stylesheet" crossorigin href="/AuraInventory/assets/index-BnHb1XWY.css">
+  <link rel="manifest" href="/AuraInventory/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/AuraInventory/registerSW.js"></script></head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
