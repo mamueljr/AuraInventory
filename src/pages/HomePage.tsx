@@ -3,7 +3,7 @@ import { ArrowRightIcon, SparklesIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/design-system'
 
-const APP_VERSION = 'v0.10'
+const APP_VERSION = 'v1.0'
 
 const stagger = {
   hidden: { opacity: 0, y: 16 },
@@ -38,7 +38,7 @@ export function HomePage() {
         custom={0}
         className="border-aura-accent/20 bg-aura-accent-soft text-aura-accent relative inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium tracking-widest uppercase"
       >
-        <SparklesIcon className="size-3" /> {APP_VERSION} · Respaldos y avisos
+        <SparklesIcon className="size-3" /> {APP_VERSION} · Instálame
       </motion.span>
 
       <motion.h1

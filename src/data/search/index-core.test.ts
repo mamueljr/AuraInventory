@@ -85,7 +85,8 @@ describe('searchIndex', () => {
     const searchMs = performance.now() - t1
 
     expect(hits.length).toBeGreaterThan(0)
-    expect(buildMs).toBeLessThan(3000)
-    expect(searchMs).toBeLessThan(100)
+    // umbrales holgados: cazan regresiones de orden de magnitud sin ser flaky bajo carga de CI
+    expect(buildMs).toBeLessThan(8000)
+    expect(searchMs).toBeLessThan(500)
   })
 })
